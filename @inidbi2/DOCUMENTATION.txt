@@ -1,0 +1,115 @@
+	Description:
+	INIDBI 2.0 - A simple server-side database extension using INI files
+
+	Author:  code34 nicolas_boiteux@yahoo.fr
+
+	Copyright (C) 2015 Nicolas BOITEUX 
+	
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+	
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+	
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function : new 
+	Instanciate inidbi object
+	Usage: _inidbi = ["new", "databasename"] call OO_INIDBI;
+	Output: inidbi2 object
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function : getVersion
+	Usage : "getVersion" call _inidbi;
+	Output : string containing the addon version and dll version
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function: exists
+	Usage : "exists" call _inidbi;
+	Output: true if the database exists
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function : delete
+	Usage : "delete" call _inidbi;
+	Output: true if the database was deleted successfully, false otherwise
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function: deleteSection
+	Usage: ["deleteSection", "sectionname"] call _inidbi;
+	Output: true if the section was deleted successfully, false otherwise
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function: deleteKey
+	Usage : ["deleteKey", ["sectionname", "keyname"]] call _inidbi;
+	Output: true if the key was deleted successfully, false otherwise
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function: read
+	Usage : ["read", ["section", "key"]] call _inidbi;
+	Usage : ["read", ["section", "key", "STRING"]] call _inidbi;
+	Usage : ["read", ["section", "key", "ARRAY"]] call _inidbi;
+	Usage : ["read", ["section", "key", "SCALAR"]] call _inidbi;
+
+	Output: value of key, if nothing is found return default value according the type.
+
+	You can also set a default return value as follow:
+	ex:
+	Usage : ["read", ["section", "key", "STRING", "mydefaultvalueifnothingisfound"]] call _inidbi;
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function: write
+	Usage: ["write", ["section", "key", "toutes les informations"]] call _inidbi;
+	Output : true if is write was successfull, false if not
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function: encodeBase64
+	Usage: ["encodeBase64", "yourstring"] call _inidbi;
+	Output: the string encode in base64
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function: decodeBase64
+	Usage: ["decodeBase64", "yourstringencoded"] call _inidbi;
+	Output: the string decode from base64 to utf8
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function: getDbName
+	Usage: "getDbName" call _inidbi;
+	Output: return the database name
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function: setDbName
+	Usage : ["setDbName", "newdbname"] call _inidbi;
+	Output : nothing
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function: getTimeStamp
+	Usage : _time = "getTimeStamp" call _inidbi;
+	Output : the unix timestamp of the OS system
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function : delete
+	Delete inidbi object
+	Usage: ["delete", _inidbi] call OO_INIDBI;
+	Output: return nothing
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
