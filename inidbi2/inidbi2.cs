@@ -111,7 +111,7 @@ namespace inidbi2
         public string Read(string File, string Section, string Key)
         {
             StringBuilder temp = new StringBuilder(10230);
-            if(GetPrivateProfileString(Section, Key, "", temp, 10230, File) == 0) { return "[false]"; } else { return "[true,\"" + temp.ToString() + "\"]"; }
+            if(GetPrivateProfileString(Section, Key, "", temp, 10230, File) == 0) { return "[false, \"\"]"; } else { return "[true," + temp.ToString() + "]"; }
         }
 
         public string DeleteSection(string File, string Section)
