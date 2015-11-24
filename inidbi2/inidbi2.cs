@@ -80,7 +80,7 @@ namespace inidbi2
 
         public string Version()
         {
-            string version = "2.0";
+            string version = "2.01";
             return version;
         }
 
