@@ -32,7 +32,7 @@ namespace inidbi2
         private static extern int WritePrivateProfileStruct(string section, string key, string struc, int size, string filepath);
 
         public string Invoke(string parameters) {
-            string[] stringSeparators = new string[] { "|" };
+            string[] stringSeparators = new string[] { ";" };
             var lines = parameters.Split(stringSeparators, StringSplitOptions.None);
             
             string function = lines[0];
