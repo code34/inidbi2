@@ -50,13 +50,13 @@
 
 		PUBLIC FUNCTION("string", "encodeBase64") {
 			private["_data"];
-			_data = "inidbi2" callExtension format["encodebase64|%1", _this];
+			_data = "inidbi2" callExtension format["encodebase64;%1", _this];
 			_data;
 		};
 
 		PUBLIC FUNCTION("string", "decodeBase64") {
 			private["_data"];
-			_data = "inidbi2" callExtension format["decodebase64|%1", _this];
+			_data = "inidbi2" callExtension format["decodebase64;%1", _this];
 			_data;
 		};
 
@@ -83,7 +83,7 @@
 		PUBLIC FUNCTION("", "exists") {
 			private["_result"];
 			
-			_result = "inidbi2" callExtension format["exists|%1", MEMBER("getFileName", nil)];
+			_result = "inidbi2" callExtension format["exists;%1", MEMBER("getFileName", nil)];
 			_result = call compile _result;
 			_result;
 		};
@@ -91,7 +91,7 @@
 		PUBLIC FUNCTION("", "delete") {
 			private["_result"];
 		
-			_result = "inidbi2" callExtension format["delete|%1", MEMBER("getFileName", nil)];
+			_result = "inidbi2" callExtension format["delete;%1", MEMBER("getFileName", nil)];
 			_result = call compile _result;
 			_result;
 		};
@@ -108,7 +108,7 @@
 			if(isnil "_section") exitWith { MEMBER("log","IniDBI: deletesection failed, sectionname is empty"); };
 			if(isnil "_key") exitWith { MEMBER("log","IniDBI: deletesection failed, key is empty"); };
 	
-			_result = "inidbi2" callExtension format["deletekey|%1|%2|%3", _file, _section, _key];
+			_result = "inidbi2" callExtension format["deletekey;%1;%2;%3", _file, _section, _key];
 			_result = call compile _result;
 			_result;
 		};		
@@ -122,7 +122,7 @@
 			if(isnil "_file") exitWith { MEMBER("log","IniDBI: deletesection failed, databasename is empty"); };
 			if(isnil "_section") exitWith { MEMBER("log","IniDBI: deletesection failed, sectionname is empty"); };
 	
-			_result = "inidbi2" callExtension format["deletesection|%1|%2", _file, _section];
+			_result = "inidbi2" callExtension format["deletesection;%1;%2", _file, _section];
 			_result = call compile _result;
 			_result;
 		};
@@ -147,7 +147,7 @@
 			if!(_type in ["ARRAY", "SCALAR", "STRING", "BOOL"]) exitWith { MEMBER("log","IniDBI: read failed, data type parameter must be ARRAY, SCALAR, STRING, BOOL"); };
 			if(isnil "_defaultvalue") then { _defaultvalue = false;};
 		
-			_result = "inidbi2" callExtension format["read|%1|%2|%3", _file, _section, _key];
+			_result = "inidbi2" callExtension format["read;%1;%2;%3", _file, _section, _key];
 			_result = call compile _result;
 		
 			if(count _result > 1) then {
@@ -213,7 +213,7 @@
 				MEMBER("log", _log);
 			} else {
 				_data = format['"%1"', _data];
-				_data = "inidbi2" callExtension format["write|%1|%2|%3|%4", _file, _section, _key, _data];
+				_data = "inidbi2" callExtension format["write;%1;%2;%3;%4", _file, _section, _key, _data];
 			};
 			_data;
 		};
