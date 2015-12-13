@@ -21,6 +21,7 @@ namespace inidbi2
         }
 
         static inidbi2 _instance;
+        private string[] stringSeparators = new string[] { "|" };
 
         [DllImport("kernel32")]
         private static extern int WritePrivateProfileString(string section, string key, string val, string filePath);
@@ -32,8 +33,7 @@ namespace inidbi2
         private static extern int WritePrivateProfileStruct(string section, string key, string struc, int size, string filepath);
 
         public string Invoke(string parameters) {
-            string[] stringSeparators = new string[] { "|" };
-            var lines = parameters.Split(stringSeparators, StringSplitOptions.None);
+            var lines = parameters.Split(this.stringSeparators, StringSplitOptions.None);
             
             string function = lines[0];
             string result = "";
@@ -71,6 +71,9 @@ namespace inidbi2
                     break;
                 case "encodebase64":
                     result = this.EncodeBase64(lines[1]);
+                    break;
+                case "setseparator":
+                    this.stringSeparators = new string[] { lines[1] };
                     break;
                 default:
                     break;
@@ -111,7 +114,7 @@ namespace inidbi2
         public string Read(string File, string Section, string Key)
         {
             StringBuilder temp = new StringBuilder(10230);
-            if(GetPrivateProfileString(Section, Key, "", temp, 10230, File) == 0) { return "[false, \"\"]"; } else { return "[true," + temp.ToString() + "]"; }
+            if(GetPrivateProfileString(Section, Key, "", temp, 10230, File) == 0) { return "[false, \"\"]"; } else { return "[true," + temp + "]"; }
         }
 
         public string DeleteSection(string File, string Section)
