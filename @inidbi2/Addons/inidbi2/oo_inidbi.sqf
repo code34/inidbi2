@@ -25,7 +25,7 @@
 		PRIVATE VARIABLE("string","version");
 	
 		PUBLIC FUNCTION("string","constructor") {
-			MEMBER("version", "2.01");
+			MEMBER("version", "2.02");
 			MEMBER("setDbName", _this);
 		};
 
