@@ -23,10 +23,12 @@
 	CLASS("OO_INIDBI")
 		PRIVATE VARIABLE("string","dbname");
 		PRIVATE VARIABLE("string","version");
+		PRIVATE VARIABLE("string", "separator");
 	
 		PUBLIC FUNCTION("string","constructor") {
 			MEMBER("version", "2.02");
 			MEMBER("setDbName", _this);
+			MEMBER("getSeparator", nil);
 		};
 
 		PUBLIC FUNCTION("string", "setDbName") {
@@ -36,6 +38,20 @@
 				_dbname = "default";
 			};
 			MEMBER("dbname", _dbname);
+		};
+
+		PUBLIC FUNCTION("string", "setSeparator") {
+			private ["_separator"];
+			_separator = MEMBER("getSeparator", nil);
+			"inidbi2" callExtension format["setseparator%1%2", _separator, _this];
+			_separator = MEMBER("getSeparator", nil);
+		};
+
+		PUBLIC FUNCTION("", "getSeparator") {
+			private ["_separator"];
+			_separator = "inidbi2" callExtension "getseparator";
+			MEMBER("separator", _separator);
+			_separator;
 		};
 
 		PUBLIC FUNCTION("", "getDbName") {
@@ -50,21 +66,31 @@
 
 		PUBLIC FUNCTION("string", "encodeBase64") {
 			private["_data"];
-			_data = "inidbi2" callExtension format["encodebase64|%1", _this];
+
+			if(count (format["%1", _this]) > 2048) then {
+				_data = "IniDBI: encodeBase64 failed data too big > 6K";
+				MEMBER("log", _data);
+			} else {
+				_data = "inidbi2" callExtension format["encodebase64%1%2", MEMBER("separator",nil), _this];
+			};
 			_data;
 		};
 
 		PUBLIC FUNCTION("string", "decodeBase64") {
 			private["_data"];
-			_data = "inidbi2" callExtension format["decodebase64|%1", _this];
+
+			if(count (format["%1", _this]) > 4096) then {
+				_data = "IniDBI: decodeBase64 failed data too big > 6K";
+				MEMBER("log", _data);
+			} else {
+				_data = "inidbi2" callExtension format["decodebase64%1%2", MEMBER("separator",nil), _this];
+			};
 			_data;
 		};
 
 		PUBLIC FUNCTION("", "getTimeStamp") {
 			private["_data"];
 			_data = "inidbi2" callExtension "timestamp";
-			_data = [_data, "SCALAR"];
-			_data = MEMBER("cast", _data);
 			_data;
 		};
 
@@ -83,7 +109,7 @@
 		PUBLIC FUNCTION("", "exists") {
 			private["_result"];
 			
-			_result = "inidbi2" callExtension format["exists|%1", MEMBER("getFileName", nil)];
+			_result = "inidbi2" callExtension format["exists%1%2", MEMBER("separator",nil), MEMBER("getFileName", nil)];
 			_result = call compile _result;
 			_result;
 		};
@@ -91,7 +117,7 @@
 		PUBLIC FUNCTION("", "delete") {
 			private["_result"];
 		
-			_result = "inidbi2" callExtension format["delete|%1", MEMBER("getFileName", nil)];
+			_result = "inidbi2" callExtension format["delete%1%2", MEMBER("separator",nil), MEMBER("getFileName", nil)];
 			_result = call compile _result;
 			_result;
 		};
@@ -108,7 +134,7 @@
 			if(isnil "_section") exitWith { MEMBER("log","IniDBI: deletesection failed, sectionname is empty"); };
 			if(isnil "_key") exitWith { MEMBER("log","IniDBI: deletesection failed, key is empty"); };
 	
-			_result = "inidbi2" callExtension format["deletekey|%1|%2|%3", _file, _section, _key];
+			_result = "inidbi2" callExtension format["deletekey%1%2%1%3%1%4", MEMBER("getSeparator",nil), _file, _section, _key];
 			_result = call compile _result;
 			_result;
 		};		
@@ -122,38 +148,33 @@
 			if(isnil "_file") exitWith { MEMBER("log","IniDBI: deletesection failed, databasename is empty"); };
 			if(isnil "_section") exitWith { MEMBER("log","IniDBI: deletesection failed, sectionname is empty"); };
 	
-			_result = "inidbi2" callExtension format["deletesection|%1|%2", _file, _section];
+			_result = "inidbi2" callExtension format["deletesection%1%2%1%3", MEMBER("separator",nil), _file, _section];
 			_result = call compile _result;
 			_result;
 		};
 
 		PUBLIC FUNCTION("array", "read") {
-			private ["_count", "_file", "_section", "_key", "_type", "_data", "_result", "_defaultvalue"];
+			private ["_count", "_file", "_section", "_key", "_data", "_result", "_defaultvalue"];
 			
 			_count = count _this;
 
 			if(_count < 2) exitwith { MEMBER("log", "Inidb: read failed not enough parameter"); 	};
 			_section 	= _this select 0;
 			_key 		= _this select 1;
-			if(_count > 2) then { _type = _this select 2;};
-			if(_count > 3) then {_defaultvalue = _this select 3;};
+			if(_count > 2) then {_defaultvalue = _this select 2;};
 
 			_file = MEMBER("getFileName", nil);
 
 			if(isnil "_file") exitWith { MEMBER("log","IniDBI: read failed, databasename is empty"); };
 			if(isnil "_section") exitWith { MEMBER("log","IniDBI: read failed, sectionname is empty"); };	
 			if(isnil "_key") exitWith { MEMBER("log","IniDBI: read failed, keyname is empty"); };
-			if(isnil "_type") then { _type = "STRING";};
-			if!(_type in ["ARRAY", "SCALAR", "STRING", "BOOL"]) exitWith { MEMBER("log","IniDBI: read failed, data type parameter must be ARRAY, SCALAR, STRING, BOOL"); };
 			if(isnil "_defaultvalue") then { _defaultvalue = false;};
 		
-			_result = "inidbi2" callExtension format["read|%1|%2|%3", _file, _section, _key];
+			_result = "inidbi2" callExtension format["read%1%2%1%3%1%4",MEMBER("separator",nil), _file, _section, _key];
 			_result = call compile _result;
 		
-			if(count _result > 1) then {
+			if(_result select 0) then {
 				_data = _result select 1;
-				_data = [_data, _type];
-				_data = MEMBER("cast", _data);
 			} else {
 				_data = _defaultvalue;
 			};
@@ -197,6 +218,7 @@
 			if(isnil "_data") exitWith {MEMBER("log", "IniDBI: write failed, data is empty"); };
 
 			if!(typename _data in ["BOOL", "ARRAY", "STRING", "SCALAR"]) then {_exit = true;};
+			if(typeName _data == "STRING") then { _data = '"'+ _data + '"'};
 			if(typename _data == "ARRAY") then { 
 				_array = [false, _data];
 				_exit = MEMBER("parseArray", _array); 
@@ -207,46 +229,14 @@
 				MEMBER("log", _log);
 			};
 		
-			if(count (toarray(format["%1", _data])) > 10230) then {
+			if(count (format["%1", _data]) > 8100) then {
 				_data = false;
-				_log = format["IniDBI: write failed %1 %2 data too big > 10K", _section, _key];
+				_log = format["IniDBI: write failed %1 %2 data too big > 8K", _section, _key];
 				MEMBER("log", _log);
 			} else {
 				_data = format['"%1"', _data];
-				_data = "inidbi2" callExtension format["write|%1|%2|%3|%4", _file, _section, _key, _data];
-			};
-			_data;
-		};
-
-		PRIVATE FUNCTION("array", "cast") {
-			private["_data", "_type"];
-
-			_data = _this select 0;
-			_type = _this select 1;
-			
-			switch (toupper(_type)) do {
-				case "ARRAY": {
-					if((_data isEqualTo "") or (typeName _data != "ARRAY")) then {
-						_data = [];
-					};
-				};
-		
-				case "SCALAR": {
-					if ((_data isEqualTo "") or (typeName _data != "SCALAR")) then {
-						_data = 0;
-					} ;
-				};
-
-				case "BOOL": {
-					if((_data isEqualTo "") or (typeName _data != "BOOL")) then {
-						_data = false;
-					};
-				};
-		
-				default {
-					_data = format["%1", _data];
-				};
-				
+				_data = "inidbi2" callExtension format["write%1%2%1%3%1%4%1%5", MEMBER("separator",nil), _file, _section, _key, _data];
+				_data = call compile _data;
 			};
 			_data;
 		};
@@ -254,5 +244,6 @@
 		PUBLIC FUNCTION("","deconstructor") { 
 			DELETE_VARIABLE("version");
 			DELETE_VARIABLE("dbname");
+			DELETE_VARIABLE("separator");
 		};
 	ENDCLASS;
