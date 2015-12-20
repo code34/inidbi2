@@ -20,8 +20,17 @@ namespace inidbi2
             return;
         }
 
+        public static string DebugRv(StringBuilder output, int outputSize, [MarshalAs(UnmanagedType.LPStr)] string function)
+        {
+            if (_instance == null)
+                _instance = new inidbi2();
+
+            string ret = _instance.Invoke(function);
+            return ret;
+        }
+
         static inidbi2 _instance;
-        private string[] stringSeparators = new string[] { "|" };
+        static string[] stringSeparators = { "|" };
 
         [DllImport("kernel32")]
         private static extern int WritePrivateProfileString(string section, string key, string val, string filePath);
@@ -33,7 +42,7 @@ namespace inidbi2
         private static extern int WritePrivateProfileStruct(string section, string key, string struc, int size, string filepath);
 
         public string Invoke(string parameters) {
-            var lines = parameters.Split(this.stringSeparators, StringSplitOptions.None);
+            string[] lines = parameters.Split(stringSeparators, StringSplitOptions.None);
             
             string function = lines[0];
             string result = "";
@@ -73,12 +82,25 @@ namespace inidbi2
                     result = this.EncodeBase64(lines[1]);
                     break;
                 case "setseparator":
-                    this.stringSeparators = new string[] { lines[1] };
+                    SetSeparator(lines[1]);
+                    break;
+                case "getseparator":
+                    result = GetSeparator();
                     break;
                 default:
                     break;
             }
             return result;
+        }
+
+        public static void SetSeparator(string separator)
+        {
+            stringSeparators[0] = "|" + separator;
+        }
+
+        public static string GetSeparator()
+        {
+            return stringSeparators[0];
         }
 
         public string Version()
@@ -130,7 +152,8 @@ namespace inidbi2
 
         public string TimeStamp()
         {
-            return ((int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds).ToString();
+            string ret = string.Format("{0:yyyyMMddHHmmss}", DateTime.UtcNow);
+            return ret;
         }
 
         public string EncodeBase64(string plainText)
