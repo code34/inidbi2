@@ -1,5 +1,5 @@
 	Description:
-	INIDBI 2.0 - A simple server-side database extension using INI files
+	INIDBI 2.02 - A simple server-side database extension using INI files
 
 	Author:  code34 nicolas_boiteux@yahoo.fr
 
@@ -29,4 +29,10 @@
 	2- check inidbi2.dll execution permissions, right click on it, and authorize it.
 
 	Changelog
+	- version 2.02 
+		- add methods to tune separators
+		- fix write returns
+		- fix read types
+		- fix buffer overflow of decode/encodebase64
+		- fix getTimeStamp
 	- version 2.0 - rebuild from scratch C# & SQF++
