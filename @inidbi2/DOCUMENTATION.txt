@@ -1,5 +1,5 @@
 	Description:
-	INIDBI 2.0 - A simple server-side database extension using INI files
+	INIDBI 2.02 - A simple server-side database extension using INI files
 
 	Author:  code34 nicolas_boiteux@yahoo.fr
 
@@ -59,15 +59,15 @@
 
 	Function: read
 	Usage : ["read", ["section", "key"]] call _inidbi;
-	Usage : ["read", ["section", "key", "STRING"]] call _inidbi;
-	Usage : ["read", ["section", "key", "ARRAY"]] call _inidbi;
-	Usage : ["read", ["section", "key", "SCALAR"]] call _inidbi;
 
-	Output: value of key, if nothing is found return default value according the type.
+	Output: value of key, if nothing is found return false;
 
-	You can also set a default return value as follow:
+	You can set the default return value as follow (instead of false)
 	ex:
-	Usage : ["read", ["section", "key", "STRING", "mydefaultvalueifnothingisfound"]] call _inidbi;
+	Usage : ["read", ["section", "key", "mydefaultvalueifnothingisfound"]] call _inidbi;
+	Usage : ["read", ["section", "key", 0]] call _inidbi;
+	Usage : ["read", ["section", "key", true]] call _inidbi;
+	Usage : ["read", ["section", "key", ["mydefaultarray"]]] call _inidbi;
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -77,13 +77,13 @@
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
-	Function: encodeBase64
+	Function: encodeBase64 a string (max size 2048)
 	Usage: ["encodeBase64", "yourstring"] call _inidbi;
 	Output: the string encode in base64
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
-	Function: decodeBase64
+	Function: decodeBase64 a string (max size 4096)
 	Usage: ["decodeBase64", "yourstringencoded"] call _inidbi;
 	Output: the string decode from base64 to utf8
 
@@ -103,7 +103,7 @@
 
 	Function: getTimeStamp
 	Usage : _time = "getTimeStamp" call _inidbi;
-	Output : the unix timestamp of the OS system
+	Output : string containing UTC timestamp of the OS system
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -111,5 +111,17 @@
 	Delete inidbi object
 	Usage: ["delete", _inidbi] call OO_INIDBI;
 	Output: return nothing
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function : getSeparator
+	Usage : "getSeparator" call _inidbi;
+	Output : string containing the parameters sepator (default is "|")
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function : setSeparator with a personnal separator will add to "|" an other string
+	Usage : ["setSeparator", "idb2"] call _inidbi;
+	will set the separator as "|idb2"
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
