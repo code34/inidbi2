@@ -40,6 +40,8 @@ namespace inidbi2
         private static extern int GetPrivateProfileStruct(string section, string key, string struc, int size, string filepath);
         [DllImport("kernel32")]
         private static extern int WritePrivateProfileStruct(string section, string key, string struc, int size, string filepath);
+        [DllImport("kernel32")]
+        private static extern int GetPrivateProfileSectionNames(byte[] retVal, int size, string filePath);
 
         public string Invoke(string parameters) {
             string[] lines = parameters.Split(stringSeparators, StringSplitOptions.None);
@@ -86,6 +88,9 @@ namespace inidbi2
                     break;
                 case "getseparator":
                     result = GetSeparator();
+                    break;
+                case "getsections":
+                    result = GetSections(mypath + lines[1]);
                     break;
                 default:
                     break;
@@ -148,6 +153,25 @@ namespace inidbi2
         public string DeleteKey(string File, string Section, string key)
         {
             if(WritePrivateProfileStruct(Section, key, null, 0, File) == 0) { return "false"; } else { return "true"; }
+        }
+
+        public string GetSections(string File)
+        {
+            byte[] temp = new byte[8000];
+            int s = GetPrivateProfileSectionNames(temp, 8000, File);
+            String result = Encoding.Default.GetString(temp);
+            String[] names = result.Split('\0');
+            result = "[";
+            foreach (String name in names)
+            {
+                if (name != String.Empty)
+                {
+                    result = result + "\"" + name + "\",";
+                }
+            }
+            result = result.Remove(result.Length - 1, 1);
+            result = result + "]";
+            return result;
         }
 
         public string TimeStamp()
