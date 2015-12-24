@@ -1,9 +1,9 @@
 	Description:
-	INIDBI 2.02 - A simple server-side database extension using INI files
+	INIDBI 2.04 - A simple server-side database extension using INI files
 
 	Author:  code34 nicolas_boiteux@yahoo.fr
 
-	Copyright (C) 2015 Nicolas BOITEUX 
+	Copyright (C) 2013-2016 Nicolas BOITEUX 
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -123,5 +123,11 @@
 	Function : setSeparator with a personnal separator will add to "|" an other string
 	Usage : ["setSeparator", "idb2"] call _inidbi;
 	will set the separator as "|idb2"
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function : getSections
+	Usage : "getSections" call _inidbi;
+	Output : array containing all string sections (limit to 8K)
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
