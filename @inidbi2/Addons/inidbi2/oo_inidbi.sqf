@@ -26,7 +26,7 @@
 		PRIVATE VARIABLE("string", "separator");
 	
 		PUBLIC FUNCTION("string","constructor") {
-			MEMBER("version", "2.02");
+			MEMBER("version", "2.04");
 			MEMBER("setDbName", _this);
 			MEMBER("getSeparator", nil);
 		};
