@@ -101,6 +101,16 @@
 			_data;
 		};
 
+		PUBLIC FUNCTION("", "getSections") {
+			private["_file", "_data"];
+
+			_file = MEMBER("getFileName", nil);
+
+			_data = "inidbi2" callExtension format["getsections%1%2",MEMBER("separator",nil), _file];
+			_data = call compile _data;
+			_data;
+		};
+
 		PUBLIC FUNCTION("string", "log") {
 			hint format["%1", _this];
 			diag_log format["%1", _this];
