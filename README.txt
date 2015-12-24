@@ -1,9 +1,9 @@
 	Description:
-	INIDBI 2.02 - A simple server-side database extension using INI files
+	INIDBI 2.04 - A simple server-side database extension using INI files
 
 	Author:  code34 nicolas_boiteux@yahoo.fr
 
-	Copyright (C) 2015 Nicolas BOITEUX 
+	Copyright (C) 2013-2016 Nicolas BOITEUX 
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -29,6 +29,8 @@
 	2- check inidbi2.dll execution permissions, right click on it, and authorize it.
 
 	Changelog
+	- version 2.04
+		- add getSections method
 	- version 2.02 
 		- add methods to tune separators
 		- fix write returns
