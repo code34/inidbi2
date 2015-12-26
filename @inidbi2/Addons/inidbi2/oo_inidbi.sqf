@@ -1,6 +1,6 @@
 ﻿	/*
 	Author: code34 nicolas_boiteux@yahoo.fr
-	Copyright (C) 2014 Nicolas BOITEUX
+	Copyright (C) 2013-2016 Nicolas BOITEUX
 
 	CLASS OO_INIDBI
 	
@@ -26,7 +26,7 @@
 		PRIVATE VARIABLE("string", "separator");
 	
 		PUBLIC FUNCTION("string","constructor") {
-			MEMBER("version", "2.04");
+			MEMBER("version", "2.05");
 			MEMBER("setDbName", _this);
 			MEMBER("getSeparator", nil);
 		};
@@ -90,7 +90,8 @@
 
 		PUBLIC FUNCTION("", "getTimeStamp") {
 			private["_data"];
-			_data = "inidbi2" callExtension "timestamp";
+			_data = "inidbi2" callExtension "gettimestamp";
+			_data = call compile _data;
 			_data;
 		};
 

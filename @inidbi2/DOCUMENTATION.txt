@@ -1,5 +1,5 @@
 	Description:
-	INIDBI 2.04 - A simple server-side database extension using INI files
+	INIDBI 2.05 - A simple server-side database extension using INI files
 
 	Author:  code34 nicolas_boiteux@yahoo.fr
 
@@ -103,7 +103,7 @@
 
 	Function: getTimeStamp
 	Usage : _time = "getTimeStamp" call _inidbi;
-	Output : string containing UTC timestamp of the OS system
+	Output : an array containing UTC timestamp of the OS system [YYYY, MM, DD, HH, MM, SS]
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 

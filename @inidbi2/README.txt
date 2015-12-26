@@ -1,5 +1,5 @@
 	Description:
-	INIDBI 2.04 - A simple server-side database extension using INI files
+	INIDBI 2.05 - A simple server-side database extension using INI files
 
 	Author:  code34 nicolas_boiteux@yahoo.fr
 
@@ -29,6 +29,8 @@
 	2- check inidbi2.dll execution permissions, right click on it, and authorize it.
 
 	Changelog
+	- version 2.05
+		- re factory gettimestamp method return array instead string containing system UTC TIME
 	- version 2.04
 		- add getSections method
 	- version 2.02 

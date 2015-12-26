@@ -74,8 +74,8 @@ namespace inidbi2
                 case "exists":
                     result = this.Exists(mypath + lines[1]);
                     break;
-                case "timestamp":
-                    result = this.TimeStamp();
+                case "gettimestamp":
+                    result = this.GetTimeStamp();
                     break;
                 case "decodebase64":
                     result = this.DecodeBase64(lines[1]);
@@ -110,7 +110,7 @@ namespace inidbi2
 
         public string Version()
         {
-            string version = "2.04";
+            string version = "2.05";
             return version;
         }
 
@@ -174,9 +174,9 @@ namespace inidbi2
             return result;
         }
 
-        public string TimeStamp()
+        public string GetTimeStamp()
         {
-            string ret = string.Format("{0:yyyyMMddHHmmss}", DateTime.UtcNow);
+            string ret = string.Format("[{0:yyyy,MM,dd,HH,mm,ss}]", DateTime.UtcNow);
             return ret;
         }
 
