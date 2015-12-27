@@ -1,4 +1,0 @@
-C:\Users\code34\Documents\Arma 3\MPMissions\inidbi2\inidbi2\bin\x86\Debug\inidbi2.dll
-C:\Users\code34\Documents\Arma 3\MPMissions\inidbi2\inidbi2\bin\x86\Debug\inidbi2.pdb
-C:\Users\code34\Documents\Arma 3\MPMissions\inidbi2\inidbi2\obj\x86\Debug\inidbi2.dll
-C:\Users\code34\Documents\Arma 3\MPMissions\inidbi2\inidbi2\obj\x86\Debug\inidbi2.pdb
