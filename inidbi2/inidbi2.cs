@@ -9,7 +9,7 @@ namespace inidbi2
 {
     public class inidbi2
     {
-        [DllExport("_RVExtension@12", CallingConvention = CallingConvention.Winapi)]
+        [DllExport("RVExtension", CallingConvention = CallingConvention.Winapi)]
         public static void RVExtension(StringBuilder output, int outputSize, [MarshalAs(UnmanagedType.LPStr)] string function)
         {
             if (_instance == null)
@@ -42,6 +42,9 @@ namespace inidbi2
         private static extern int WritePrivateProfileStruct(string section, string key, string struc, int size, string filepath);
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileSectionNames(byte[] retVal, int size, string filePath);
+        [DllImport("kernel32")]
+        private static extern int GetLastError();
+
 
         public string Invoke(string parameters) {
             string[] lines = parameters.Split(stringSeparators, StringSplitOptions.None);
@@ -137,7 +140,7 @@ namespace inidbi2
         {
             if(WritePrivateProfileString(Section, Key, Value, File) == 0) {return "false";}else{return "true";}
         }
-        
+
         public string Read(string File, string Section, string Key)
         {
             StringBuilder temp = new StringBuilder(10230);
