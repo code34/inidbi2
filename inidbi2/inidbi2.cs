@@ -43,7 +43,7 @@ namespace inidbi2
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileSectionNames(byte[] retVal, int size, string filePath);
         [DllImport("kernel32")]
-        private static extern int GetPrivateProfileSection(string section, byte[] retVal, int size);
+        private static extern int GetPrivateProfileSection(string section, byte[] retVal, int size, string File);
         [DllImport("kernel32")]
         private static extern int GetLastError();
 
@@ -98,7 +98,7 @@ namespace inidbi2
                     result = GetSections(mypath + lines[1]);
                     break;
                 case "getkeys":
-                    result = GetKeys(lines[1]);
+                    result = GetKeys(mypath + lines[1], lines[2]);
                     break;
                 default:
                     break;
@@ -182,10 +182,10 @@ namespace inidbi2
             return result;
         }
 
-        public string GetKeys(string section)
+        public string GetKeys(string File, string section)
         {
             byte[] temp = new byte[8000];
-            int s = GetPrivateProfileSection(section, temp, 8000);
+            int s = GetPrivateProfileSection(section, temp, 8000, File);
             String result = Encoding.Default.GetString(temp);
             String[] lines = result.Split('\0');
             result = "[";
