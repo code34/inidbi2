@@ -89,7 +89,7 @@ namespace inidbi2
                     result = this.EncodeBase64(lines[1]);
                     break;
                 case "setseparator":
-                    SetSeparator(lines[1]);
+                    result = SetSeparator(lines[1]);
                     break;
                 case "getseparator":
                     result = GetSeparator();
@@ -106,9 +106,10 @@ namespace inidbi2
             return result;
         }
 
-        public static void SetSeparator(string separator)
+        public static string SetSeparator(string separator)
         {
             stringSeparators[0] = "|" + separator;
+            return stringSeparators[0];
         }
 
         public static string GetSeparator()
@@ -127,11 +128,15 @@ namespace inidbi2
             string result = "true";
             try
             {
+                if (!System.IO.File.Exists(File))
+                {
+                    throw new Exception("File doesn't exist");
+                }
                 System.IO.File.Delete(File);
             }
-            catch (Exception e)
+            catch
             {
-                result = "false";
+                return "false";
             }
             return result;
         }
@@ -215,14 +220,30 @@ namespace inidbi2
 
         public string EncodeBase64(string plainText)
         {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
+            string ret = "";
+            try
+            {
+                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+                ret = System.Convert.ToBase64String(plainTextBytes);
+            } catch
+            {
+                return ret;
+            }
+            return ret;
         }
 
         public string DecodeBase64(string base64EncodedData)
         {
-            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
-            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+            string ret = "";
+            try
+            {
+                var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+                ret = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+            } catch
+            {
+                return ret;
+            }
+            return ret;
         }
     }
 }
