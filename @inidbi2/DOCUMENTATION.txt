@@ -131,3 +131,10 @@
 	Output : array containing all string sections (limit to 8K)
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function : getKeys
+	Usage : ["getKeys", _section] call _inidbi;
+	Param : _section : string section
+	Output : array containing all string keys in sections (limit to 8K)
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
