@@ -34,17 +34,19 @@
 		PUBLIC FUNCTION("string", "setDbName") {
 			private ["_dbname"];
 			_dbname = _this;
-			if(_dbname == "") then {
+			if(_dbname isEqualTo "") then {
 				_dbname = "default";
 			};
 			MEMBER("dbname", _dbname);
 		};
 
 		PUBLIC FUNCTION("string", "setSeparator") {
-			private ["_separator"];
+			private ["_newseparator", "_separator", "_result"];
+			_result = true;
 			_separator = MEMBER("getSeparator", nil);
-			"inidbi2" callExtension format["setseparator%1%2", _separator, _this];
-			_separator = MEMBER("getSeparator", nil);
+			_newseparator = "inidbi2" callExtension format["setseparator%1%2", _separator, _this];
+			if!(_separator isEqualTo _newseparator) then { _result = false;	};
+			_result;
 		};
 
 		PUBLIC FUNCTION("", "getSeparator") {
