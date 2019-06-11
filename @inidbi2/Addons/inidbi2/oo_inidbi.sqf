@@ -112,6 +112,16 @@
 			_data;
 		};
 
+		PUBLIC FUNCTION("string", "getKeys") {
+			private["_section", "_data"];
+
+			_section = _this;
+
+			_data = "inidbi2" callExtension format["getkeys%1%2",MEMBER("separator",nil), _section];
+			_data = call compile _data;
+			_data;
+		};
+
 		PUBLIC FUNCTION("string", "log") {
 			hint format["%1", _this];
 			diag_log format["%1", _this];
