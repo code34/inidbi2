@@ -32,6 +32,7 @@
 	Changelog
 	- version 2.06
 		- add getKeys method
+		- fix setseparator method, manage exception in delete method, manage exception in encode64base/decode64base
 	- version 2.05
 		- re factory gettimestamp method return array instead string containing system UTC TIME
 	- version 2.04
