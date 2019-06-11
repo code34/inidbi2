@@ -1,5 +1,5 @@
 	Description:
-	INIDBI 2.05 - A simple server-side database extension using INI files
+	INIDBI 2.06 - A simple server-side database extension using INI files
 
 	Author:  code34 nicolas_boiteux@yahoo.fr
 
