@@ -1,9 +1,9 @@
 	Description:
-	INIDBI 2.05 - A simple server-side database extension using INI files
+	INIDBI 2.06 - A simple server-side database extension using INI files
 
 	Author:  code34 nicolas_boiteux@yahoo.fr
 
-	Copyright (C) 2013-2016 Nicolas BOITEUX 
+	Copyright (C) 2013-2019 Nicolas BOITEUX 
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -26,9 +26,13 @@
 		../Arma 3/@inidbi2/db/
 		../Arma 3/@inidbi2/Addons/inidbi.pbo
 
-	2- check inidbi2.dll execution permissions, right click on it, and authorize it.
+	2- check inidbi2.dll execution permissions, right click on it, and authorize it
+	3- load it through -serverMod=@inidbi2; or -mod=@inidbi2;
 
 	Changelog
+	- version 2.06
+		- add getKeys method
+		- fix setseparator method, manage exception in delete method, manage exception in encode64base/decode64base
 	- version 2.05
 		- re factory gettimestamp method return array instead string containing system UTC TIME
 	- version 2.04
