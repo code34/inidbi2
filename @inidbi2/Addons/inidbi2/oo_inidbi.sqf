@@ -26,7 +26,7 @@
 		PRIVATE VARIABLE("string", "separator");
 	
 		PUBLIC FUNCTION("string","constructor") {
-			MEMBER("version", "2.05");
+			MEMBER("version", "2.06");
 			MEMBER("setDbName", _this);
 			MEMBER("getSeparator", nil);
 		};
@@ -113,11 +113,12 @@
 		};
 
 		PUBLIC FUNCTION("string", "getKeys") {
-			private["_section", "_data"];
+			private["_file","_section", "_data"];
 
 			_section = _this;
+			_file = MEMBER("getFileName", nil);
 
-			_data = "inidbi2" callExtension format["getkeys%1%2",MEMBER("separator",nil), _section];
+			_data = "inidbi2" callExtension format["getkeys%1%2%1%3",MEMBER("separator",nil), _file, _section];
 			_data = call compile _data;
 			_data;
 		};
