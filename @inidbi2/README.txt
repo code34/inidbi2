@@ -3,7 +3,7 @@
 
 	Author:  code34 nicolas_boiteux@yahoo.fr
 
-	Copyright (C) 2013-2016 Nicolas BOITEUX 
+	Copyright (C) 2013-2019 Nicolas BOITEUX 
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -26,7 +26,8 @@
 		../Arma 3/@inidbi2/db/
 		../Arma 3/@inidbi2/Addons/inidbi.pbo
 
-	2- check inidbi2.dll execution permissions, right click on it, and authorize it.
+	2- check inidbi2.dll execution permissions, right click on it, and authorize it
+	3- load it through -serverMod=@inidbi2; or -mod=@inidbi2;
 
 	Changelog
 	- version 2.06
