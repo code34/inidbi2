@@ -177,7 +177,10 @@ namespace inidbi2
                     result = result + "\"" + name + "\",";
                 }
             }
-            result = result.Remove(result.Length - 1, 1);
+            if (result.Length > 1)
+            {
+                result = result.Remove(result.Length - 1, 1);
+            }
             result = result + "]";
             return result;
         }
@@ -197,7 +200,9 @@ namespace inidbi2
                     result = result + "\"" + values[0] + "\",";
                 }
             }
-            result = result.Remove(result.Length - 1, 1);
+            if(result.Length > 1 ) {
+                result = result.Remove(result.Length - 1, 1);
+            }
             result = result + "]";
             return result;
         }
