@@ -26,25 +26,32 @@
 		PRIVATE VARIABLE("string", "separator");
 	
 		PUBLIC FUNCTION("string","constructor") {
-			MEMBER("version", "2.05");
+			MEMBER("version", "2.06");
 			MEMBER("setDbName", _this);
 			MEMBER("getSeparator", nil);
+		};
+
+		PUBLIC FUNCTION("", "getDbName") {
+			MEMBER("dbname", nil);
 		};
 
 		PUBLIC FUNCTION("string", "setDbName") {
 			private ["_dbname"];
 			_dbname = _this;
-			if(_dbname == "") then {
+			if(_dbname isEqualTo "") then {
 				_dbname = "default";
 			};
 			MEMBER("dbname", _dbname);
 		};
 
 		PUBLIC FUNCTION("string", "setSeparator") {
-			private ["_separator"];
+			private ["_newseparator", "_separator", "_result"];
+			_result = true;
 			_separator = MEMBER("getSeparator", nil);
-			"inidbi2" callExtension format["setseparator%1%2", _separator, _this];
-			_separator = MEMBER("getSeparator", nil);
+			_newseparator = "inidbi2" callExtension format["setseparator%1%2", _separator, _this];
+			if!(_newseparator isEqualTo ("|"+_this)) then { _result = false;};
+			MEMBER("separator", ("|"+_this));
+			_result;
 		};
 
 		PUBLIC FUNCTION("", "getSeparator") {
@@ -54,11 +61,7 @@
 			_separator;
 		};
 
-		PUBLIC FUNCTION("", "getDbName") {
-			MEMBER("dbname", nil);
-		};		
-
-		PRIVATE FUNCTION("", "getFileName") {
+		PUBLIC FUNCTION("", "getFileName") {
 			private ["_filename"];
 			_filename = MEMBER("dbname", nil) + ".ini";
 			_filename;
@@ -108,6 +111,17 @@
 			_file = MEMBER("getFileName", nil);
 
 			_data = "inidbi2" callExtension format["getsections%1%2",MEMBER("separator",nil), _file];
+			_data = call compile _data;
+			_data;
+		};
+
+		PUBLIC FUNCTION("string", "getKeys") {
+			private["_file","_section", "_data"];
+
+			_section = _this;
+			_file = MEMBER("getFileName", nil);
+
+			_data = "inidbi2" callExtension format["getkeys%1%2%1%3",MEMBER("separator",nil), _file, _section];
 			_data = call compile _data;
 			_data;
 		};
@@ -192,7 +206,7 @@
 			_data;
 		};
 
-		PRIVATE FUNCTION("array", "parseArray"){
+		PUBLIC FUNCTION("array", "parseArray"){
 			private ["_data", "_exit", "_array"];
 
 			_exit = _this select 0;
@@ -216,12 +230,12 @@
 				MEMBER("log", "Inidb: write failed not enough parameter");
 			};
 
-			_section 	= _this select 0;
-			_key 		= _this select 1;
-			_data 		= _this select 2;	
+			_section = _this select 0;
+			_key = _this select 1;
+			_data = _this select 2;	
 			
 			_file = MEMBER("getFileName", nil);
-			_exit 		= false;
+			_exit = false;
 
 			if(isnil "_file") exitWith {  MEMBER("log", "IniDBI: write failed, databasename is empty"); 	};
 			if(isnil "_section") exitWith { MEMBER("log", "IniDBI: write failed, sectionname is empty"); };

@@ -312,5 +312,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 		case ERR_UNDEFMEMBER : { \
 			format ['ERROR UNDEF : %1("%3","%2")', _exception select 1, _exception select 2, _exception select 3] call BIS_fnc_error; \
 		}; \
+		default { \
+			format ['EXCEPTION : %1', _exception select 1] call BIS_fnc_error; \
+		}; \
 	}; \
 }}] 

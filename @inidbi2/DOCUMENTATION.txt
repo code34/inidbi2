@@ -1,9 +1,9 @@
 	Description:
-	INIDBI 2.05 - A simple server-side database extension using INI files
+	INIDBI 2.06 - A simple server-side database extension using INI files
 
 	Author:  code34 nicolas_boiteux@yahoo.fr
 
-	Copyright (C) 2013-2016 Nicolas BOITEUX 
+	Copyright (C) 2013-2019 Nicolas BOITEUX 
 	
 	This program is free software: you can redistribute it and/or modify
 	it under the terms of the GNU General Public License as published by
@@ -22,45 +22,59 @@
 
 	Function : new 
 	Instanciate inidbi object
-	Usage: _inidbi = ["new", "databasename"] call OO_INIDBI;
+	Usage: _inidbi = ["new", _databasename] call OO_INIDBI;
+	Param: string - the databasename to use. Databasename will be used as name of file on computer 
+	where the script is executed. INIDBI automatically add the .ini file extension to the databasename. 
+	This file is stored into the addons path into db/ directory.
 	Output: inidbi2 object
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function : getVersion
 	Usage : "getVersion" call _inidbi;
+	Param : none
 	Output : string containing the addon version and dll version
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function: exists
 	Usage : "exists" call _inidbi;
-	Output: true if the database exists
+	Param: none
+	Output: true if the Arma has the required permissions and database file exists; 
+	otherwise, return false. 
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function : delete
 	Usage : "delete" call _inidbi;
+	Param: none
 	Output: true if the database was deleted successfully, false otherwise
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function: deleteSection
-	Usage: ["deleteSection", "sectionname"] call _inidbi;
+	Usage: ["deleteSection", _section] call _inidbi;
+	Param: string _section - name of section to delete
 	Output: true if the section was deleted successfully, false otherwise
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function: deleteKey
-	Usage : ["deleteKey", ["sectionname", "keyname"]] call _inidbi;
+	Usage : ["deleteKey", [_section, _key]] call _inidbi;
+	Param: array 
+		string _section - name of section containing the key
+		string _key - name of key to delete
 	Output: true if the key was deleted successfully, false otherwise
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function: read
-	Usage : ["read", ["section", "key"]] call _inidbi;
+	Usage : ["read", [_section, _key]] call _inidbi;
 
-	Output: value of key, if nothing is found return false;
+	Param: array
+		string _section - name of sectrion containing the key
+		string _key - name of key to read
+	Output: value of key, if nothing is found return by default: false;
 
 	You can set the default return value as follow (instead of false)
 	ex:
@@ -72,37 +86,49 @@
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function: write
-	Usage: ["write", ["section", "key", "toutes les informations"]] call _inidbi;
+	Usage: ["write", [_section, _key, _value]] call _inidbi;
+	Param:
+		string _section - name of sectrion containing the key
+		string _key - name of key to write
+		string/scalar/array/bool _value - value to write (other type are not supported)
 	Output : true if is write was successfull, false if not
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
-	Function: encodeBase64 a string (max size 2048)
-	Usage: ["encodeBase64", "yourstring"] call _inidbi;
-	Output: the string encode in base64
+	Function: encodeBase64 
+	Usage: ["encodeBase64", _yourstring] call _inidbi;
+	Param:
+		string - an utf8 string to encode to base64 (max size 2048)
+	Output: the string encode in base64, if error returns empty string
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
-	Function: decodeBase64 a string (max size 4096)
-	Usage: ["decodeBase64", "yourstringencoded"] call _inidbi;
-	Output: the string decode from base64 to utf8
+	Function: decodeBase64
+	Usage: ["decodeBase64", _yourstringbase64] call _inidbi;
+	Param:
+		string - a base64 string (max size 4096)
+	Output: the string decode from base64 to utf8, if error returns empty string
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function: getDbName
 	Usage: "getDbName" call _inidbi;
+	Param: none
 	Output: return the database name
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function: setDbName
-	Usage : ["setDbName", "newdbname"] call _inidbi;
+	Usage : ["setDbName", _dbname] call _inidbi;
+	Param: 
+		string - name of the file databasename (without its extension .ini)
 	Output : nothing
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function: getTimeStamp
 	Usage : _time = "getTimeStamp" call _inidbi;
+	Param : none
 	Output : an array containing UTC timestamp of the OS system [YYYY, MM, DD, HH, MM, SS]
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
@@ -110,24 +136,42 @@
 	Function : delete
 	Delete inidbi object
 	Usage: ["delete", _inidbi] call OO_INIDBI;
+	Param: 
+		code - delete the _inidbi object
 	Output: return nothing
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function : getSeparator
 	Usage : "getSeparator" call _inidbi;
+	Param : none
 	Output : string containing the parameters sepator (default is "|")
 
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
-	Function : setSeparator with a personnal separator will add to "|" an other string
-	Usage : ["setSeparator", "idb2"] call _inidbi;
-	will set the separator as "|idb2"
-
+	Function : setSeparator will add to "|" your string separator
+	Usage : ["setSeparator", _separator] call _inidbi;
+	Param: 
+		string - suffix to add after the original operators "|" 
+		ex: 
+			_separator = "idb2";
+			["setSeparator", _separator] call _inidbi;
+			will set separator as "|idb2"
+		Output: 
+			bool - return true if separator was setted, false if not
 	----------------------------------------------------------------------------------------------------------------------------------------------
 
 	Function : getSections
 	Usage : "getSections" call _inidbi;
+	Param: none
 	Output : array containing all string sections (limit to 8K)
+
+	----------------------------------------------------------------------------------------------------------------------------------------------
+
+	Function : getKeys
+	Usage : ["getKeys", _section] call _inidbi;
+	Param : 
+		string _section - name of section containing the keys
+	Output : array of string keys declared into the section (limit to 8K)
 
 	----------------------------------------------------------------------------------------------------------------------------------------------

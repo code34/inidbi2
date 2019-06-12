@@ -43,6 +43,8 @@ namespace inidbi2
         [DllImport("kernel32")]
         private static extern int GetPrivateProfileSectionNames(byte[] retVal, int size, string filePath);
         [DllImport("kernel32")]
+        private static extern int GetPrivateProfileSection(string section, byte[] retVal, int size, string File);
+        [DllImport("kernel32")]
         private static extern int GetLastError();
 
 
@@ -87,7 +89,7 @@ namespace inidbi2
                     result = this.EncodeBase64(lines[1]);
                     break;
                 case "setseparator":
-                    SetSeparator(lines[1]);
+                    result = SetSeparator(lines[1]);
                     break;
                 case "getseparator":
                     result = GetSeparator();
@@ -95,15 +97,19 @@ namespace inidbi2
                 case "getsections":
                     result = GetSections(mypath + lines[1]);
                     break;
+                case "getkeys":
+                    result = GetKeys(mypath + lines[1], lines[2]);
+                    break;
                 default:
                     break;
             }
             return result;
         }
 
-        public static void SetSeparator(string separator)
+        public static string SetSeparator(string separator)
         {
             stringSeparators[0] = "|" + separator;
+            return stringSeparators[0];
         }
 
         public static string GetSeparator()
@@ -113,7 +119,7 @@ namespace inidbi2
 
         public string Version()
         {
-            string version = "2.05";
+            string version = "2.06";
             return version;
         }
 
@@ -122,11 +128,15 @@ namespace inidbi2
             string result = "true";
             try
             {
+                if (!System.IO.File.Exists(File))
+                {
+                    throw new Exception("File doesn't exist");
+                }
                 System.IO.File.Delete(File);
             }
-            catch (Exception e)
+            catch
             {
-                result = "false";
+                return "false";
             }
             return result;
         }
@@ -172,7 +182,32 @@ namespace inidbi2
                     result = result + "\"" + name + "\",";
                 }
             }
-            result = result.Remove(result.Length - 1, 1);
+            if (result.Length > 1)
+            {
+                result = result.Remove(result.Length - 1, 1);
+            }
+            result = result + "]";
+            return result;
+        }
+
+        public string GetKeys(string File, string section)
+        {
+            byte[] temp = new byte[8000];
+            int s = GetPrivateProfileSection(section, temp, 8000, File);
+            String result = Encoding.Default.GetString(temp);
+            String[] lines = result.Split('\0');
+            result = "[";
+            foreach (String line in lines)
+            {
+                if (line != String.Empty)
+                {
+                    string[] values = line.Split('=');
+                    result = result + "\"" + values[0] + "\",";
+                }
+            }
+            if(result.Length > 1 ) {
+                result = result.Remove(result.Length - 1, 1);
+            }
             result = result + "]";
             return result;
         }
@@ -185,14 +220,30 @@ namespace inidbi2
 
         public string EncodeBase64(string plainText)
         {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
-            return System.Convert.ToBase64String(plainTextBytes);
+            string ret = "";
+            try
+            {
+                var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
+                ret = System.Convert.ToBase64String(plainTextBytes);
+            } catch
+            {
+                return ret;
+            }
+            return ret;
         }
 
         public string DecodeBase64(string base64EncodedData)
         {
-            var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
-            return System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+            string ret = "";
+            try
+            {
+                var base64EncodedBytes = System.Convert.FromBase64String(base64EncodedData);
+                ret = System.Text.Encoding.UTF8.GetString(base64EncodedBytes);
+            } catch
+            {
+                return ret;
+            }
+            return ret;
         }
     }
 }
