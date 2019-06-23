@@ -9,8 +9,11 @@ namespace inidbi2
 {
     public class inidbi2
     {
-        // use RVExtension for 64bits, _RVExtension@12 for 32 bits
+#if WIN64
         [DllExport("RVExtension", CallingConvention = CallingConvention.Winapi)]
+#else
+        [DllExport("_RVExtension@12", CallingConvention = CallingConvention.Winapi)]
+#endif
         public static void RVExtension(StringBuilder output, int outputSize, [MarshalAs(UnmanagedType.LPStr)] string function)
         {
             if (_instance == null)
